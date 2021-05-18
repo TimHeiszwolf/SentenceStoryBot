@@ -11,28 +11,18 @@ client = commands.Bot(command_prefix = '/')
 channels = {'storysuggestions': client.get_channel('820793577981345823'), 'storyvoting': client.get_channel('820793625209208863'), 'storyresults': client.get_channel('820793645581074432'), 'storybotmessages':client.get_channel('820793577981345823')}# This currently doesn't work. A work around is sending a messege into each channel before the start of the 
 print(channels)
 
-collectingTime = 60# The minimum about of time (in seconds) the suggestion/collection phase lasts.
-votingTime = 60# The amount of time (in seconds) that a vote lasts.
+collectingTime = 120# The minimum about of time (in seconds) the suggestion/collection phase lasts.
+votingTime = 120# The amount of time (in seconds) that a vote lasts.
 minimumAmountOfLines = 3# Minimum number of lines needed before a vote can start.
 modeStartTime = time.time()
-endTime = time.time() + 60*5# How many seconds the bot will last.
-timeLeftWarning = 4*60# How many seconds before the end warnings will be given.
+endTime = time.time() + 60*60*3.5# How many seconds the bot will last.
+timeLeftWarning = 30*60# How many seconds before the end warnings will be given.
 
 mode = 'collecting'
 newLines = []
 votes = {}
 totalStory = []
 
-
-"""
-
-- Edits don't work
-- Slow mode is on.
-- Max 140 characters
-- While voting it doesn't take suggestions
-- 
-
-"""
 
 @client.event
 async def on_ready():
@@ -97,7 +87,7 @@ async def checkMode():
             
             for key in votes:
                 if votes[key] >= highestVotes:
-                # If the number of votes is higher (or equal) to the current highest votes then that becomes the result. If multiple suggestions recieve the same amount of votes then 
+                # If the number of votes is higher (or equal) to the current highest votes then that becomes the result. If multiple suggestions recieve the same amount of votes then last posted suggestion wil become the result.
                     highestVotes = votes[key]
                     bestLine = key
             
